@@ -1,11 +1,6 @@
-# define VIDEO_MEMORY 0xB8000
-# define WHITE_ON_BLACK 0x0F
-#define MAX_TASKS 256
-#define VGA_WIDTH 80
-#define VGA_HEIGHT 25
-#define white_on_black 0x0F
-#define LightGreyOnBlack 0x07
-
+#include "constants.h"
+#include "screen.c"
+#include "keyboard.c"
 
 void display_str(char *str){
     char* video_memory = (char*) VIDEO_MEMORY;
@@ -16,13 +11,6 @@ void display_str(char *str){
     }
 }
 
-void keyboardtest() {
-    __asm__() volatile (
-        "mov ah, 0\n"
-        "int 0x16\n"
-        "cmp al, 0\n"
-    );
-}
 
 
 void kmain() {
@@ -35,6 +23,10 @@ void kmain() {
     display_str("Hello, World!");
     
     while (1) {
+        unsigned char key = keyboardtest();
+        if (key) {
+            display_character(key);
+        }
 
     }
 
